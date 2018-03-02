@@ -67,7 +67,7 @@ GhostServer.prototype.start = function (externalApp) {
             config.set('server:socket', socketValues);
         } else {
             self.httpServer = rootApp.listen(
-                config.get('server').port,
+                process.env.PORT || config.get('server').port,
                 config.get('server').host
             );
         }
@@ -78,7 +78,7 @@ GhostServer.prototype.start = function (externalApp) {
             if (error.errno === 'EADDRINUSE') {
                 ghostError = new common.errors.GhostError({
                     message: common.i18n.t('errors.httpServer.addressInUse.error'),
-                    context: common.i18n.t('errors.httpServer.addressInUse.context', {port: config.get('server').port}),
+                    context: common.i18n.t('errors.httpServer.addressInUse.context', {port: process.env.PORT || config.get('server').port}),
                     help: common.i18n.t('errors.httpServer.addressInUse.help')
                 });
             } else {
@@ -196,7 +196,7 @@ GhostServer.prototype.logStartMessages = function () {
         common.logging.info(common.i18n.t('notices.httpServer.ghostIsRunningIn', {env: config.get('env')}));
         common.logging.info(common.i18n.t('notices.httpServer.listeningOn', {
             host: config.get('server').socket || config.get('server').host,
-            port: config.get('server').port
+            port: process.env.PORT || config.get('server').port
         }));
         common.logging.info(common.i18n.t('notices.httpServer.urlConfiguredAs', {url: urlService.utils.urlFor('home', true)}));
         common.logging.info(common.i18n.t('notices.httpServer.ctrlCToShutDown'));
